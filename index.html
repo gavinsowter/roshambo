@@ -5,79 +5,109 @@
     <!-- makes the page fit phone screens too -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ROSHAMBO</title>
-    <!-- link the stylesheet (all the colors, sizes and animations live there) -->
+
+    <!-- loads the round, bubbly "Fredoka" font from Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <!-- our own styles (colors, robot, animations) -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- ===== TITLE ===== -->
-    <header>
-        <h1>ROSHAMBO</h1>
-        <p class="subtitle">You vs. the Robot. First to 5 wins.</p>
+    <!-- ===== TOP BAR: title on the left, scores on the right ===== -->
+    <header class="top-bar">
+        <h1>Roshambo<span class="accent">!</span></h1>
+
+        <div class="scores">
+            <div class="score-card">
+                <span class="score-name you">You</span>
+                <!-- JavaScript changes this number -->
+                <span id="human-score" class="score-number">0</span>
+            </div>
+            <div class="score-card">
+                <span class="score-name bolt">Bolt</span>
+                <span id="robot-score" class="score-number">0</span>
+            </div>
+        </div>
     </header>
 
-    <!-- ===== SCOREBOARD ===== -->
-    <section class="scoreboard">
-        <div class="score-box">
-            <span class="score-label">YOU</span>
-            <!-- JavaScript changes the number inside this span -->
-            <span id="human-score" class="score-number">0</span>
+    <!-- ===== DIFFICULTY PICKER =====
+         data-level tells JavaScript which brain Bolt should use.
+         aria-pressed="true" marks the one that's currently picked. -->
+    <section class="difficulty">
+        <span class="difficulty-title">Bolt's brain:</span>
+        <div class="levels">
+            <button class="level" data-level="easy" aria-pressed="false">Easy</button>
+            <button class="level" data-level="medium" aria-pressed="false">Medium</button>
+            <button class="level" data-level="hard" aria-pressed="true">Hard</button>
         </div>
-        <div class="score-box">
-            <span class="score-label">ROBOT</span>
-            <span id="robot-score" class="score-number">0</span>
-        </div>
+        <!-- explains what the chosen level does -->
+        <p id="level-info" class="level-info"></p>
     </section>
 
-    <!-- ===== THE ARENA: your hand on the left, the robot on the right ===== -->
+    <!-- ===== THE BIG WHITE CARD where the match happens ===== -->
     <main class="arena">
 
-        <!-- YOUR SIDE -->
+        <!-- YOUR SIDE: a blue circle showing your hand -->
         <div class="side">
-            <!-- this shows the hand you picked (an emoji) -->
-            <div id="human-hand" class="hand">✊</div>
-            <p class="side-name">You</p>
+            <!-- JavaScript puts the rock/paper/scissors icon in here -->
+            <div id="human-hand" class="player-circle"></div>
+            <p id="human-label" class="side-label">Pick a move!</p>
         </div>
 
-        <div class="vs">VS</div>
-
-        <!-- ROBOT SIDE -->
+        <!-- ROBOT SIDE: speech bubble + Bolt the robot -->
         <div class="side">
-            <!-- the robot is built out of plain boxes (divs) that CSS styles -->
+            <!-- what Bolt says (JavaScript changes it every round) -->
+            <div id="speech" class="speech">Beep boop! Ready to play?</div>
+
+            <!-- Bolt is built from plain boxes that CSS shapes and colors -->
             <div id="robot" class="robot">
-                <div class="antenna"></div>
+                <div class="antenna-ball"></div>
+                <div class="antenna-stick"></div>
                 <div class="robot-head">
-                    <div class="eye"></div>
-                    <div class="eye"></div>
+                    <div class="eyes">
+                        <div class="eye"><div class="pupil"></div></div>
+                        <div class="eye"><div class="pupil"></div></div>
+                    </div>
                     <div class="mouth"></div>
                 </div>
-                <div class="robot-body">
-                    <!-- the robot's hand: shows what it picked -->
-                    <div id="robot-hand" class="hand robot-hand">✊</div>
-                </div>
+                <!-- Bolt's "chest screen" shows what he picked -->
+                <div id="robot-hand" class="robot-body"></div>
             </div>
-            <p class="side-name">Robot</p>
+            <p id="robot-label" class="side-label">Bolt is waiting…</p>
         </div>
     </main>
 
-    <!-- ===== MESSAGE: says who won each round ===== -->
-    <p id="message" class="message">Pick your move to start!</p>
+    <!-- ===== RESULT MESSAGE ===== -->
+    <p id="message" class="message">First to 5 wins. Good luck!</p>
 
-    <!-- ===== THE 3 BUTTONS ===== -->
-    <!-- data-choice="rock" is a little label JavaScript reads to know which button was clicked -->
+    <!-- ===== THE 3 BUTTONS =====
+         data-choice="rock" is a label JavaScript reads to know which button was clicked.
+         The <svg> parts are small drawings (icons). -->
     <section class="buttons">
-        <button class="choice" data-choice="rock">✊<span>Rock</span></button>
-        <button class="choice" data-choice="paper">✋<span>Paper</span></button>
-        <button class="choice" data-choice="scissors">✌️<span>Scissors</span></button>
+        <button class="choice" data-choice="rock">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 15l2-7 6-3 6 3 2 7-4 4H8z"/><path d="M10 9l2 3-1 3"/></svg>
+            Rock
+        </button>
+        <button class="choice" data-choice="paper">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5"/></svg>
+            Paper
+        </button>
+        <button class="choice" data-choice="scissors">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M20 4 8.1 15.9"/><path d="M14.5 14.5 20 20"/><path d="M8.1 8.1 12 12"/></svg>
+            Scissors
+        </button>
     </section>
 
     <!-- hidden until the game ends -->
     <button id="play-again" class="play-again hidden">Play again</button>
 
-    <!-- ===== ROUND HISTORY: a list of every round ===== -->
+    <!-- ===== ROUND HISTORY ===== -->
     <ul id="history" class="history"></ul>
 
-    <!-- load the JavaScript LAST, so all the HTML above already exists when it runs -->
+    <!-- load JavaScript LAST so all the HTML above already exists -->
     <script src="mainscript.js"></script>
 </body>
 </html>

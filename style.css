@@ -1,291 +1,461 @@
 /* =========================================================
-   COLORS
-   Saved as "variables" up here so they're easy to change.
-   Use one anywhere with var(--name)
+   STYLE B: "TOY ROBOT"
+   Bright cream background, chunky dark outlines,
+   and hard "cartoon" shadows that sit down and to the right.
    ========================================================= */
+
+/* ----- COLORS (change these to restyle the whole game) ----- */
 :root {
-    --bg: #14161f;          /* page background (dark navy) */
-    --panel: #1f2230;       /* boxes and buttons */
-    --text: #f1f1f5;        /* main text */
-    --muted: #8b8fa3;       /* gray, less important text */
-    --accent: #4fd1c5;      /* teal: the robot's "glow" color */
-    --win: #5ee07d;         /* green for wins */
-    --lose: #ff6b6b;        /* red for losses */
-    --robot: #b8bfd3;       /* robot's metal color */
+    --bg: #fff4e0;         /* cream page background */
+    --ink: #2a2238;        /* dark purple-black for outlines and text */
+    --card: #ffffff;       /* white cards */
+    --blue: #1d5fd1;       /* YOUR color */
+    --blue-light: #dbe8ff; /* light blue fills */
+    --orange: #ff9f1c;     /* BOLT's color */
+    --orange-dark: #b54a00;/* darker orange, readable as text */
 }
 
-/* makes width/height include padding and borders (easier sizing) */
+/* makes width/height include padding and borders */
 * {
     box-sizing: border-box;
 }
 
 body {
     margin: 0;
-    padding: 24px 16px 48px;
+    padding: 32px 16px 48px;
     background: var(--bg);
-    color: var(--text);
-    font-family: system-ui, -apple-system, sans-serif;
-    text-align: center;          /* center all the text */
+    color: var(--ink);
+    font-family: "Fredoka", system-ui, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;   /* centers everything on the page */
+    gap: 24px;
 }
 
-/* ===== TITLE ===== */
+/* ===== TOP BAR ===== */
+.top-bar {
+    width: 100%;
+    max-width: 1000px;
+    display: flex;
+    flex-wrap: wrap;                  /* wraps onto 2 lines on phones */
+    justify-content: space-between;   /* title left, scores right */
+    align-items: center;
+    gap: 16px;
+}
+
 h1 {
     margin: 0;
-    font-size: 3rem;
-    letter-spacing: 0.2em;       /* spreads the letters apart */
-    color: var(--accent);
+    font-size: 44px;
+    font-weight: 700;
 }
 
-.subtitle {
-    margin: 4px 0 24px;
-    color: var(--muted);
+.accent {
+    color: var(--orange);
 }
 
-/* ===== SCOREBOARD ===== */
-.scoreboard {
-    display: flex;               /* puts the two boxes side by side */
-    justify-content: center;
-    gap: 16px;
-    margin-bottom: 24px;
-}
-
-.score-box {
-    background: var(--panel);
-    border-radius: 12px;
-    padding: 12px 28px;
+.scores {
     display: flex;
-    flex-direction: column;      /* stacks label on top of number */
+    gap: 12px;
 }
 
-.score-label {
-    font-size: 0.8rem;
-    color: var(--muted);
-    letter-spacing: 0.15em;
+/* the white score boxes with the hard shadow */
+.score-card {
+    background: var(--card);
+    border: 3px solid var(--ink);
+    border-radius: 18px;
+    padding: 8px 20px;
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    /* box-shadow: right 4px, down 4px, no blur = cartoon shadow */
+    box-shadow: 4px 4px 0 var(--ink);
 }
+
+.score-name {
+    font-size: 16px;
+    font-weight: 600;
+}
+.score-name.you  { color: var(--blue); }
+.score-name.bolt { color: var(--orange-dark); }
 
 .score-number {
-    font-size: 2.5rem;
-    font-weight: bold;
+    font-size: 34px;
+    font-weight: 700;
 }
 
-/* ===== ARENA (you vs robot) ===== */
-.arena {
+/* ===== DIFFICULTY PICKER ===== */
+.difficulty {
+    width: 100%;
+    max-width: 1000px;
     display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+}
+
+.difficulty-title {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+/* the 3 level buttons sit together like one pill-shaped switch */
+.levels {
+    display: flex;
+    border: 3px solid var(--ink);
+    border-radius: 16px;
+    overflow: hidden;                 /* clips the buttons to the rounded corners */
+    box-shadow: 3px 3px 0 var(--ink);
+}
+
+.level {
+    min-height: 44px;
+    padding: 6px 18px;
+    background: var(--card);
+    color: var(--ink);
+    border: none;
+    border-right: 3px solid var(--ink);   /* divider line between buttons */
+    font-family: inherit;
+    font-size: 17px;
+    font-weight: 600;
+    cursor: pointer;
+}
+.level:last-child {
+    border-right: none;
+}
+.level:hover {
+    background: var(--blue-light);
+}
+
+/* the picked level: [aria-pressed="true"] targets buttons with that attribute */
+.level[aria-pressed="true"] {
+    background: var(--orange);
+}
+
+.level-info {
+    margin: 0;
+    font-size: 16px;
+    color: #5a5068;
+    flex: 1 1 260px;
+}
+
+/* ===== THE ARENA (big white card) ===== */
+.arena {
+    width: 100%;
+    max-width: 1000px;
+    background: var(--card);
+    border: 3px solid var(--ink);
+    border-radius: 32px;
+    box-shadow: 8px 8px 0 var(--ink);
+    padding: 32px 24px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;            /* lines both sides up along the bottom */
+    justify-content: space-around;
+    gap: 24px;
+}
+
+.side {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.side-label {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+/* your big blue circle */
+.player-circle {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;               /* 50% = circle */
+    background: var(--blue-light);
+    border: 3px solid var(--ink);
+    display: flex;
+    align-items: center;
     justify-content: center;
-    align-items: center;         /* lines everything up vertically */
-    gap: 32px;
-    min-height: 260px;
+    color: var(--blue);               /* the icon uses this color */
 }
 
-.side-name {
-    color: var(--muted);
-    margin-top: 8px;
+/* ===== ICONS (the rock / paper / scissors drawings) =====
+   "stroke" = the line color. currentColor means
+   "use whatever text color the parent has". */
+svg {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
 }
 
-.vs {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: var(--muted);
+.player-circle svg { width: 80px; height: 80px; }
+.robot-body svg    { width: 40px; height: 40px; }
+
+/* ===== SPEECH BUBBLE ===== */
+.speech {
+    background: var(--ink);
+    color: #ffffff;
+    border-radius: 20px;
+    padding: 10px 18px;
+    font-size: 18px;
+    font-weight: 600;
+    max-width: 260px;
+    text-align: center;
+    position: relative;
 }
 
-/* the hand emoji */
-.hand {
-    font-size: 5rem;
-    line-height: 1;
+/* the little triangle "tail" under the bubble.
+   ::after makes an extra shape without adding HTML */
+.speech::after {
+    content: "";
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    margin-left: -10px;
+    border-width: 10px 10px 0;
+    border-style: solid;
+    border-color: var(--ink) transparent transparent;
 }
 
-/* ===== THE ROBOT (built from boxes) ===== */
+/* ===== BOLT THE ROBOT ===== */
 .robot {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-/* the little stick on top of its head */
-.antenna {
-    width: 6px;
-    height: 24px;
-    background: var(--robot);
-    position: relative;          /* lets us place the ball on top of it */
-}
-
-/* the glowing ball on the antenna. ::before makes an extra shape with no HTML */
-.antenna::before {
-    content: "";
-    position: absolute;
-    top: -12px;
-    left: -6px;
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;          /* 50% = a circle */
-    background: var(--accent);
-    box-shadow: 0 0 12px var(--accent);   /* the glow */
-}
-
-.robot-head {
-    width: 120px;
-    height: 90px;
-    background: var(--robot);
-    border-radius: 18px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 24px;
-    position: relative;
-}
-
-.eye {
+.antenna-ball {
     width: 22px;
     height: 22px;
     border-radius: 50%;
-    background: var(--accent);
-    box-shadow: 0 0 10px var(--accent);
-    transition: background 0.3s, height 0.3s;   /* smooth color/shape changes */
+    background: var(--orange);
+    border: 3px solid var(--ink);
 }
 
+.antenna-stick {
+    width: 6px;
+    height: 18px;
+    background: var(--ink);
+}
+
+.robot-head {
+    width: 180px;
+    height: 130px;
+    border-radius: 36px;
+    background: var(--orange);
+    border: 3px solid var(--ink);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+}
+
+.eyes {
+    display: flex;
+    gap: 36px;
+}
+
+.eye {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: #ffffff;
+    border: 3px solid var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: height 0.25s;          /* smooth squint */
+}
+
+.pupil {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--ink);
+}
+
+/* default mouth: a flat line */
 .mouth {
-    position: absolute;
-    bottom: 14px;
-    width: 50px;
-    height: 8px;
-    border-radius: 4px;
-    background: #3a3f55;
-    transition: all 0.3s;
+    width: 48px;
+    height: 6px;
+    background: var(--ink);
+    border-radius: 3px;
+    transition: all 0.25s;
 }
 
+/* Bolt's chest screen, shows his pick */
 .robot-body {
     margin-top: 6px;
     width: 140px;
-    height: 110px;
-    background: var(--robot);
-    border-radius: 18px;
+    height: 70px;
+    border-radius: 24px;
+    background: var(--blue-light);
+    border: 3px solid var(--ink);
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
+    color: var(--orange-dark);
 }
 
-.robot-hand {
-    font-size: 4rem;
-}
+/* ===== BOLT'S MOODS =====
+   JavaScript adds "happy" or "sad" to the robot. */
 
-/* ===== ROBOT MOODS =====
-   JavaScript adds one of these classes to the robot
-   depending on who won the round. */
-
-/* robot WON the round: red angry eyes, big grin */
-.robot.happy .eye {
-    background: var(--lose);
-    box-shadow: 0 0 14px var(--lose);
-}
+/* Bolt WON the round: big smile */
 .robot.happy .mouth {
-    height: 18px;
-    border-radius: 0 0 25px 25px;   /* rounded bottom = smile */
-    background: var(--lose);
+    height: 22px;
+    background: transparent;
+    border: 3px solid var(--ink);
+    border-top: none;                    /* only the bottom half = smile */
+    border-radius: 0 0 24px 24px;
 }
 
-/* robot LOST the round: squinty eyes, frown */
-.robot.sad .eye {
-    height: 6px;
-    background: var(--muted);
-    box-shadow: none;
-}
+/* Bolt LOST the round: frown + squinty eyes */
 .robot.sad .mouth {
-    height: 14px;
-    border-radius: 25px 25px 0 0;   /* rounded top = frown */
+    height: 20px;
+    background: transparent;
+    border: 3px solid var(--ink);
+    border-bottom: none;                 /* only the top half = frown */
+    border-radius: 24px 24px 0 0;
+}
+.robot.sad .eye {
+    height: 14px;                        /* squished eyes */
+}
+.robot.sad .pupil {
+    height: 4px;
 }
 
-/* ===== SHAKE ANIMATION ("rock... paper... scissors...") =====
-   @keyframes describes the motion; the .shaking class turns it on */
-@keyframes shake {
+/* ===== ANIMATIONS ===== */
+
+/* "rock... paper... scissors..." bounce */
+@keyframes bounce {
     0%, 100% { transform: translateY(0); }
-    50%      { transform: translateY(-20px); }   /* move up 20px */
+    50%      { transform: translateY(-18px); }
 }
 .shaking {
-    animation: shake 0.3s ease-in-out 3;          /* bounce 3 times */
+    animation: bounce 0.3s ease-in-out 3;   /* 3 bounces = 0.9 seconds */
+}
+
+/* little hop Bolt does when he wins a round */
+@keyframes hop {
+    0%, 100% { transform: translateY(0) rotate(0); }
+    30%      { transform: translateY(-14px) rotate(-4deg); }
+    60%      { transform: translateY(-6px) rotate(4deg); }
+}
+.robot.happy {
+    animation: hop 0.6s ease-out;
 }
 
 /* ===== MESSAGE ===== */
 .message {
-    font-size: 1.4rem;
-    font-weight: bold;
-    min-height: 2em;             /* keeps the page from jumping when text changes */
-    margin: 16px 0;
+    margin: 0;
+    font-size: 30px;
+    font-weight: 700;
+    text-align: center;
+    min-height: 1.3em;            /* stops the page jumping when text changes */
 }
-.message.win  { color: var(--win); }
-.message.lose { color: var(--lose); }
+.message.win  { color: var(--blue); }
+.message.lose { color: var(--orange-dark); }
 
 /* ===== BUTTONS ===== */
 .buttons {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
-    gap: 12px;
-    flex-wrap: wrap;             /* lets buttons wrap onto a new line on small phones */
+    gap: 18px;
 }
 
 .choice {
-    background: var(--panel);
-    color: var(--text);
-    border: 2px solid transparent;
-    border-radius: 14px;
-    padding: 14px 20px;
-    font-size: 2.5rem;
-    cursor: pointer;             /* hand cursor on hover */
+    min-width: 150px;
+    min-height: 64px;
+    padding: 14px 24px;
+    background: var(--card);
+    color: var(--ink);
+    border: 3px solid var(--ink);
+    border-radius: 22px;
+    box-shadow: 5px 5px 0 var(--ink);
+    font-family: inherit;               /* use Fredoka, not the browser's button font */
+    font-size: 22px;
+    font-weight: 600;
+    cursor: pointer;
     display: flex;
-    flex-direction: column;
     align-items: center;
-    min-width: 110px;
-    transition: transform 0.15s, border-color 0.15s;
+    justify-content: center;
+    gap: 10px;
+    transition: transform 0.1s, box-shadow 0.1s, background 0.15s;
 }
 
-.choice span {
-    font-size: 0.9rem;
-    margin-top: 4px;
+.choice svg {
+    width: 26px;
+    height: 26px;
+    flex-shrink: 0;            /* stops the icon getting squished on small screens */
 }
 
-/* :hover = when the mouse is over it */
+/* :hover = mouse over the button: turns blue */
 .choice:hover:not(:disabled) {
-    transform: translateY(-4px);
-    border-color: var(--accent);
+    background: var(--blue);
+    color: #ffffff;
 }
 
-/* :disabled = while a round is animating or the game is over */
+/* :active = while it's being pressed: it "pushes down" into its shadow */
+.choice:active:not(:disabled) {
+    transform: translate(4px, 4px);
+    box-shadow: 1px 1px 0 var(--ink);
+}
+
+/* while a round animates or the game is over */
 .choice:disabled {
-    opacity: 0.4;
+    opacity: 0.45;
     cursor: not-allowed;
 }
 
 .play-again {
-    margin-top: 20px;
-    background: var(--accent);
-    color: var(--bg);
-    border: none;
-    border-radius: 10px;
-    padding: 12px 28px;
-    font-size: 1.1rem;
-    font-weight: bold;
+    padding: 14px 32px;
+    background: var(--orange);
+    color: var(--ink);
+    border: 3px solid var(--ink);
+    border-radius: 22px;
+    box-shadow: 5px 5px 0 var(--ink);
+    font-family: inherit;
+    font-size: 22px;
+    font-weight: 700;
     cursor: pointer;
 }
 
-/* anything with class "hidden" disappears */
 .hidden {
     display: none;
 }
 
 /* ===== ROUND HISTORY ===== */
 .history {
-    max-width: 360px;
-    margin: 28px auto 0;
+    width: 100%;
+    max-width: 420px;
+    margin: 0;
     padding: 0;
-    list-style: none;            /* no bullets or numbers (each line already says "Round X") */
-    text-align: left;
-    color: var(--muted);
+    list-style: none;          /* no bullet points */
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
-/* ===== SMALL SCREENS (phones) ===== */
-@media (max-width: 500px) {
-    .arena { gap: 12px; }
-    .hand { font-size: 3.5rem; }
-    .robot-head { width: 96px; height: 74px; }
-    .robot-body { width: 110px; height: 90px; }
-    .choice { min-width: 90px; font-size: 2rem; }
+.history li {
+    background: var(--card);
+    border: 2px solid var(--ink);
+    border-radius: 14px;
+    padding: 8px 14px;
+    font-size: 16px;
+}
+
+/* ===== PHONES (screens 600px wide or less) ===== */
+@media (max-width: 600px) {
+    h1 { font-size: 34px; }
+    .player-circle { width: 120px; height: 120px; }
+    .player-circle svg { width: 64px; height: 64px; }
+    .robot-head { width: 150px; height: 110px; }
+    .message { font-size: 24px; }
+    .buttons { gap: 10px; }
+    .choice { min-width: 0; flex: 1 1 100px; padding: 10px 8px; gap: 6px; font-size: 17px; }
 }

@@ -1,1 +1,291 @@
+/* =========================================================
+   COLORS
+   Saved as "variables" up here so they're easy to change.
+   Use one anywhere with var(--name)
+   ========================================================= */
+:root {
+    --bg: #14161f;          /* page background (dark navy) */
+    --panel: #1f2230;       /* boxes and buttons */
+    --text: #f1f1f5;        /* main text */
+    --muted: #8b8fa3;       /* gray, less important text */
+    --accent: #4fd1c5;      /* teal: the robot's "glow" color */
+    --win: #5ee07d;         /* green for wins */
+    --lose: #ff6b6b;        /* red for losses */
+    --robot: #b8bfd3;       /* robot's metal color */
+}
 
+/* makes width/height include padding and borders (easier sizing) */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 24px 16px 48px;
+    background: var(--bg);
+    color: var(--text);
+    font-family: system-ui, -apple-system, sans-serif;
+    text-align: center;          /* center all the text */
+}
+
+/* ===== TITLE ===== */
+h1 {
+    margin: 0;
+    font-size: 3rem;
+    letter-spacing: 0.2em;       /* spreads the letters apart */
+    color: var(--accent);
+}
+
+.subtitle {
+    margin: 4px 0 24px;
+    color: var(--muted);
+}
+
+/* ===== SCOREBOARD ===== */
+.scoreboard {
+    display: flex;               /* puts the two boxes side by side */
+    justify-content: center;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.score-box {
+    background: var(--panel);
+    border-radius: 12px;
+    padding: 12px 28px;
+    display: flex;
+    flex-direction: column;      /* stacks label on top of number */
+}
+
+.score-label {
+    font-size: 0.8rem;
+    color: var(--muted);
+    letter-spacing: 0.15em;
+}
+
+.score-number {
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+
+/* ===== ARENA (you vs robot) ===== */
+.arena {
+    display: flex;
+    justify-content: center;
+    align-items: center;         /* lines everything up vertically */
+    gap: 32px;
+    min-height: 260px;
+}
+
+.side-name {
+    color: var(--muted);
+    margin-top: 8px;
+}
+
+.vs {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--muted);
+}
+
+/* the hand emoji */
+.hand {
+    font-size: 5rem;
+    line-height: 1;
+}
+
+/* ===== THE ROBOT (built from boxes) ===== */
+.robot {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* the little stick on top of its head */
+.antenna {
+    width: 6px;
+    height: 24px;
+    background: var(--robot);
+    position: relative;          /* lets us place the ball on top of it */
+}
+
+/* the glowing ball on the antenna. ::before makes an extra shape with no HTML */
+.antenna::before {
+    content: "";
+    position: absolute;
+    top: -12px;
+    left: -6px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;          /* 50% = a circle */
+    background: var(--accent);
+    box-shadow: 0 0 12px var(--accent);   /* the glow */
+}
+
+.robot-head {
+    width: 120px;
+    height: 90px;
+    background: var(--robot);
+    border-radius: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+    position: relative;
+}
+
+.eye {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 10px var(--accent);
+    transition: background 0.3s, height 0.3s;   /* smooth color/shape changes */
+}
+
+.mouth {
+    position: absolute;
+    bottom: 14px;
+    width: 50px;
+    height: 8px;
+    border-radius: 4px;
+    background: #3a3f55;
+    transition: all 0.3s;
+}
+
+.robot-body {
+    margin-top: 6px;
+    width: 140px;
+    height: 110px;
+    background: var(--robot);
+    border-radius: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.robot-hand {
+    font-size: 4rem;
+}
+
+/* ===== ROBOT MOODS =====
+   JavaScript adds one of these classes to the robot
+   depending on who won the round. */
+
+/* robot WON the round: red angry eyes, big grin */
+.robot.happy .eye {
+    background: var(--lose);
+    box-shadow: 0 0 14px var(--lose);
+}
+.robot.happy .mouth {
+    height: 18px;
+    border-radius: 0 0 25px 25px;   /* rounded bottom = smile */
+    background: var(--lose);
+}
+
+/* robot LOST the round: squinty eyes, frown */
+.robot.sad .eye {
+    height: 6px;
+    background: var(--muted);
+    box-shadow: none;
+}
+.robot.sad .mouth {
+    height: 14px;
+    border-radius: 25px 25px 0 0;   /* rounded top = frown */
+}
+
+/* ===== SHAKE ANIMATION ("rock... paper... scissors...") =====
+   @keyframes describes the motion; the .shaking class turns it on */
+@keyframes shake {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-20px); }   /* move up 20px */
+}
+.shaking {
+    animation: shake 0.3s ease-in-out 3;          /* bounce 3 times */
+}
+
+/* ===== MESSAGE ===== */
+.message {
+    font-size: 1.4rem;
+    font-weight: bold;
+    min-height: 2em;             /* keeps the page from jumping when text changes */
+    margin: 16px 0;
+}
+.message.win  { color: var(--win); }
+.message.lose { color: var(--lose); }
+
+/* ===== BUTTONS ===== */
+.buttons {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;             /* lets buttons wrap onto a new line on small phones */
+}
+
+.choice {
+    background: var(--panel);
+    color: var(--text);
+    border: 2px solid transparent;
+    border-radius: 14px;
+    padding: 14px 20px;
+    font-size: 2.5rem;
+    cursor: pointer;             /* hand cursor on hover */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 110px;
+    transition: transform 0.15s, border-color 0.15s;
+}
+
+.choice span {
+    font-size: 0.9rem;
+    margin-top: 4px;
+}
+
+/* :hover = when the mouse is over it */
+.choice:hover:not(:disabled) {
+    transform: translateY(-4px);
+    border-color: var(--accent);
+}
+
+/* :disabled = while a round is animating or the game is over */
+.choice:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.play-again {
+    margin-top: 20px;
+    background: var(--accent);
+    color: var(--bg);
+    border: none;
+    border-radius: 10px;
+    padding: 12px 28px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* anything with class "hidden" disappears */
+.hidden {
+    display: none;
+}
+
+/* ===== ROUND HISTORY ===== */
+.history {
+    max-width: 360px;
+    margin: 28px auto 0;
+    padding: 0;
+    list-style: none;            /* no bullets or numbers (each line already says "Round X") */
+    text-align: left;
+    color: var(--muted);
+}
+
+/* ===== SMALL SCREENS (phones) ===== */
+@media (max-width: 500px) {
+    .arena { gap: 12px; }
+    .hand { font-size: 3.5rem; }
+    .robot-head { width: 96px; height: 74px; }
+    .robot-body { width: 110px; height: 90px; }
+    .choice { min-width: 90px; font-size: 2rem; }
+}

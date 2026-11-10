@@ -2,12 +2,82 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <!-- makes the page fit phone screens too -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ROSHAMBO</title>
+    <!-- link the stylesheet (all the colors, sizes and animations live there) -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+    <!-- ===== TITLE ===== -->
+    <header>
+        <h1>ROSHAMBO</h1>
+        <p class="subtitle">You vs. the Robot. First to 5 wins.</p>
+    </header>
+
+    <!-- ===== SCOREBOARD ===== -->
+    <section class="scoreboard">
+        <div class="score-box">
+            <span class="score-label">YOU</span>
+            <!-- JavaScript changes the number inside this span -->
+            <span id="human-score" class="score-number">0</span>
+        </div>
+        <div class="score-box">
+            <span class="score-label">ROBOT</span>
+            <span id="robot-score" class="score-number">0</span>
+        </div>
+    </section>
+
+    <!-- ===== THE ARENA: your hand on the left, the robot on the right ===== -->
+    <main class="arena">
+
+        <!-- YOUR SIDE -->
+        <div class="side">
+            <!-- this shows the hand you picked (an emoji) -->
+            <div id="human-hand" class="hand">✊</div>
+            <p class="side-name">You</p>
+        </div>
+
+        <div class="vs">VS</div>
+
+        <!-- ROBOT SIDE -->
+        <div class="side">
+            <!-- the robot is built out of plain boxes (divs) that CSS styles -->
+            <div id="robot" class="robot">
+                <div class="antenna"></div>
+                <div class="robot-head">
+                    <div class="eye"></div>
+                    <div class="eye"></div>
+                    <div class="mouth"></div>
+                </div>
+                <div class="robot-body">
+                    <!-- the robot's hand: shows what it picked -->
+                    <div id="robot-hand" class="hand robot-hand">✊</div>
+                </div>
+            </div>
+            <p class="side-name">Robot</p>
+        </div>
+    </main>
+
+    <!-- ===== MESSAGE: says who won each round ===== -->
+    <p id="message" class="message">Pick your move to start!</p>
+
+    <!-- ===== THE 3 BUTTONS ===== -->
+    <!-- data-choice="rock" is a little label JavaScript reads to know which button was clicked -->
+    <section class="buttons">
+        <button class="choice" data-choice="rock">✊<span>Rock</span></button>
+        <button class="choice" data-choice="paper">✋<span>Paper</span></button>
+        <button class="choice" data-choice="scissors">✌️<span>Scissors</span></button>
+    </section>
+
+    <!-- hidden until the game ends -->
+    <button id="play-again" class="play-again hidden">Play again</button>
+
+    <!-- ===== ROUND HISTORY: a list of every round ===== -->
+    <ul id="history" class="history"></ul>
+
+    <!-- load the JavaScript LAST, so all the HTML above already exists when it runs -->
     <script src="mainscript.js"></script>
-        
 </body>
 </html>
-
